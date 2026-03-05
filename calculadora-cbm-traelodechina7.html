@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora CBM - Traelodechina7</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo h1 {
+            color: #e94560;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        .logo span {
+            color: #0f3460;
+        }
+        .logo p {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        h2 {
+            text-align: center;
+            color: #0f3460;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #e94560;
+        }
+        .btn-calcular {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #e94560 0%, #c73e54 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        .btn-calcular:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+        }
+        .btn-calcular:active {
+            transform: translateY(0);
+        }
+        .resultado {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+        }
+        .resultado.mostrar {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .resultado h3 {
+            color: #e94560;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .resultado .valor {
+            color: white;
+            font-size: 42px;
+            font-weight: 800;
+        }
+        .resultado .unidad {
+            color: #aaa;
+            font-size: 18px;
+            margin-top: 5px;
+        }
+        .info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1><span>Traelode</span>china7</h1>
+            <p>Calculadora de Carga Marítima</p>
+        </div>
+        
+        <h2>Calculadora CBM</h2>
+        
+        <div class="input-group">
+            <label for="largo">Largo (cm)</label>
+            <input type="number" id="largo" placeholder="Ej: 60" min="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="ancho">Ancho (cm)</label>
+            <input type="number" id="ancho" placeholder="Ej: 40" min="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="alto">Alto (cm)</label>
+            <input type="number" id="alto" placeholder="Ej: 30" min="0">
+        </div>
+        
+        <button class="btn-calcular" onclick="calcularCBM()">Calcular CBM</button>
+        
+        <div class="resultado" id="resultado">
+            <h3>Volumen Total</h3>
+            <div class="valor" id="valorCBM">0.0000</div>
+            <div class="unidad">CBM (Metros Cúbicos)</div>
+        </div>
+        
+        <div class="info">
+            <strong>Fórmula:</strong> CBM = (Largo × Ancho × Alto) ÷ 1,000,000<br>
+            <strong>Nota:</strong> 1 CBM = 1 metro cúbico = 1000 litros
+        </div>
+    </div>
+
+    <script>
+        function calcularCBM() {
+            const largo = parseFloat(document.getElementById('largo').value);
+            const ancho = parseFloat(document.getElementById('ancho').value);
+            const alto = parseFloat(document.getElementById('alto').value);
+            
+            if (isNaN(largo) || isNaN(ancho) || isNaN(alto)) {
+                alert('Por favor, ingresa valores numéricos válidos en todos los campos');
+                return;
+            }
+            
+            if (largo <= 0 || ancho <= 0 || alto <= 0) {
+                alert('Por favor, ingresa valores mayores a 0');
+                return;
+            }
+            
+            const cbm = (largo * ancho * alto) / 1000000;
+            
+            document.getElementById('valorCBM').textContent = cbm.toFixed(4);
+            document.getElementById('resultado').classList.add('mostrar');
+        }
+        
+        document.getElementById('largo').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calcularCBM();
+        });
+        document.getElementById('ancho').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calcularCBM();
+        });
+        document.getElementById('alto').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calcularCBM();
+        });
+    </script>
+</body>
+</html>
