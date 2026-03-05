@@ -321,8 +321,11 @@
             
             const precio = cbmActual * precioUnitario;
             
-            document.getElementById('valorPrecio').textContent = '$' + precio.toFixed(2);
-            document.getElementById('detallePrecio').textContent = detalle;
+            const precioFinal = precio < 40 ? 40 : precio;
+            const infoMinimo = precio < 40 ? ' (Mínimo $40)' : '';
+            
+            document.getElementById('valorPrecio').textContent = '$' + precioFinal.toFixed(2);
+            document.getElementById('detallePrecio').textContent = detalle + infoMinimo;
             document.getElementById('resultadoPrecio').classList.add('mostrar');
         }
         
