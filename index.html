@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora CBM - Traelodechina7</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo h1 {
+            color: #e94560;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        .logo span {
+            color: #0f3460;
+        }
+        .logo p {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        h2 {
+            text-align: center;
+            color: #0f3460;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+        h3 {
+            text-align: center;
+            color: #0f3460;
+            margin: 30px 0 20px;
+            font-size: 18px;
+            border-top: 2px dashed #ddd;
+            padding-top: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #e94560;
+        }
+        .btn-calcular {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #e94560 0%, #c73e54 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        .btn-calcular:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+        }
+        .btn-calcular:active {
+            transform: translateY(0);
+        }
+        .btn-precio {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        .btn-precio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(15, 52, 96, 0.4);
+        }
+        .resultado {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+        }
+        .resultado.mostrar {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        .resultado.precio {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .resultado h3 {
+            color: #e94560;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            padding: 0;
+            margin: 0 0 10px 0;
+        }
+        .resultado.precio h3 {
+            color: white;
+        }
+        .resultado .valor {
+            color: white;
+            font-size: 42px;
+            font-weight: 800;
+        }
+        .resultado.precio .valor {
+            color: white;
+        }
+        .resultado .unidad {
+            color: #aaa;
+            font-size: 18px;
+            margin-top: 5px;
+        }
+        .resultado.precio .unidad {
+            color: rgba(255,255,255,0.8);
+        }
+        .info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+        .zona-info {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1><span>Traelode</span>china7</h1>
+            <p>Calculadora de Carga Marítima</p>
+        </div>
+        
+        <h2>Calculadora CBM</h2>
+        
+        <div class="input-group">
+            <label for="largo">Largo (cm)</label>
+            <input type="number" id="largo" placeholder="Ej: 60" min="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="ancho">Ancho (cm)</label>
+            <input type="number" id="ancho" placeholder="Ej: 40" min="0">
+        </div>
+        
+        <div class="input-group">
+            <label for="alto">Alto (cm)</label>
+            <input type="number" id="alto" placeholder="Ej: 30" min="0">
+        </div>
+        
+        <button class="btn-calcular" onclick="calcularCBM()">Calcular CBM</button>
+        
+        <div class="resultado" id="resultado">
+            <h3>Volumen Total</h3>
+            <div class="valor" id="valorCBM">0.0000</div>
+            <div class="unidad">CBM (Metros Cúbicos)</div>
+        </div>
+        
+        <h3>Precio por Ciudad</h3>
+        
+        <div class="input-group">
+            <label for="ciudad">Selecciona la ciudad/zona</label>
+            <select id="ciudad" onchange="actualizarZonaInfo()">
+                <option value="">-- Selecciona una ciudad --</option>
+                <option value="principales">Caracas, Valencia, Barcelona, Maracay</option>
+                <option value="frontera">Apure, Táchira, Trujillo, Mérida, Zulia</option>
+                <option value="otras">Otras Ciudades</option>
+                <option value="margarita">Margarita</option>
+            </select>
+            <div class="zona-info" id="zonaInfo"></div>
+        </div>
+        
+        <button class="btn-precio" onclick="calcularPrecio()">Calcular Precio</button>
+        
+        <div class="resultado precio" id="resultadoPrecio">
+            <h3>Precio Total</h3>
+            <div class="valor" id="valorPrecio">$0</div>
+            <div class="unidad" id="detallePrecio"></div>
+        </div>
+        
+        <div class="info">
+            <strong>Fórmula:</strong> CBM = (Largo × Ancho × Alto) ÷ 1,000,000<br>
+            <strong>Nota:</strong> 1 CBM = 1 metro cúbico = 1000 litros
+        </div>
+    </div>
+
+    <script>
+        let cbmActual = 0;
+        
+        const precios = {
+            principales: { menos1: 765, mas1: 735 },
+            frontera: { menos1: 900, '1a10': 875 },
+            otras: { menos1: 875, '1a10': 845 },
+            margarita: { menos1: 1160, '1a10': 1125 }
+        };
+        
+        const infoZonas = {
+            principales: "Menos de 1 CBM: $765 | Más de 1 CBM: $735",
+            frontera: "Menos de 1 CBM: $900 | De 1 a 10 CBM: $875",
+            otras: "Menos de 1 CBM: $875 | De 1 a 10 CBM: $845",
+            margarita: "Menos de 1 CBM: $1160 | De 1 a 10 CBM: $1125"
+        };
+
+        function actualizarZonaInfo() {
+            const ciudad = document.getElementById('ciudad').value;
+            document.getElementById('zonaInfo').textContent = infoZonas[ciudad] || '';
+        }
+        
+        function calcularCBM() {
+            const largo = parseFloat(document.getElementById('largo').value);
+            const ancho = parseFloat(document.getElementById('ancho').value);
+            const alto = parseFloat(document.getElementById('alto').value);
+            
+            if (isNaN(largo) || isNaN(ancho) || isNaN(alto)) {
+                alert('Por favor, ingresa valores numéricos válidos en todos los campos');
+                return;
+            }
+            
+            if (largo <= 0 || ancho <= 0 || alto <= 0) {
+                alert('Por favor, ingresa valores mayores a 0');
+                return;
+            }
+            
+            cbmActual = (largo * ancho * alto) / 1000000;
+            
+            document.getElementById('valorCBM').textContent = cbmActual.toFixed(4);
+            document.getElementById('resultado').classList.add('mostrar');
+        }
+        
+        function calcularPrecio() {
+            const ciudad = document.getElementById('ciudad').value;
+            
+            if (cbmActual === 0) {
+                alert('Primero calcula el CBM por favor');
+                return;
+            }
+            
+            if (!ciudad) {
+                alert('Por favor selecciona una ciudad');
+                return;
+            }
+            
+            const zonaPrecios = precios[ciudad];
+            let precioUnitario = 0;
+            let detalle = '';
+            
+            if (ciudad === 'principales') {
+                if (cbmActual < 1) {
+                    precioUnitario = zonaPrecios.menos1;
+                    detalle = `${cbmActual.toFixed(4)} CBM x $${precioUnitario}`;
+                } else {
+                    precioUnitario = zonaPrecios.mas1;
+                    detalle = `${cbmActual.toFixed(4)} CBM x $${precioUnitario}`;
+                }
+            } else {
+                if (cbmActual < 1) {
+                    precioUnitario = zonaPrecios.menos1;
+                    detalle = `${cbmActual.toFixed(4)} CBM x $${precioUnitario}`;
+                } else {
+                    precioUnitario = zonaPrecios['1a10'];
+                    detalle = `${cbmActual.toFixed(4)} CBM x $${precioUnitario}`;
+                }
+            }
+            
+            const precio = cbmActual * precioUnitario;
+            
+            document.getElementById('valorPrecio').textContent = '$' + precio.toFixed(2);
+            document.getElementById('detallePrecio').textContent = detalle;
+            document.getElementById('resultadoPrecio').classList.add('mostrar');
+        }
+        
+        document.getElementById('largo').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calcularCBM();
+        });
+        document.getElementById('ancho').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calcularCBM();
+        });
+        document.getElementById('alto').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') calcularCBM();
+        });
+    </script>
+</body>
+</html>
